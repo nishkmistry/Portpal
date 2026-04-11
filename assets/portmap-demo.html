@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Geist:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#05050f;display:flex;align-items:center;justify-content:center;height:100vh}
+#wrap{width:100%;height:100vh;background:#05050f;overflow:hidden;position:relative;font-family:'Geist',sans-serif}
+canvas#bg{position:absolute;inset:0;pointer-events:none}
+svg#graph{position:absolute;inset:0;width:100%;height:100%}
+.hdr{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(5,5,15,0.8);border-bottom:1px solid rgba(124,111,255,0.15);z-index:10;backdrop-filter:blur(8px)}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-dot{width:8px;height:8px;border-radius:50%;background:#7c6fff;box-shadow:0 0 12px #7c6fff,0 0 24px rgba(124,111,255,0.4);animation:dotPulse 2s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{opacity:.6;transform:scale(.9)}50%{opacity:1;transform:scale(1.15)}}
+.hdr-title{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#e0e0ff;letter-spacing:.08em}
+.hdr-sub{font-size:10px;color:rgba(124,111,255,0.6);font-family:'JetBrains Mono',monospace}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.scan-txt{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(124,111,255,0.5);letter-spacing:.1em}
+.pulse-ring{width:8px;height:8px;position:relative}
+.pulse-ring::before{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px solid #7c6fff;animation:pring 1.5s ease-out infinite}
+@keyframes pring{0%{transform:scale(1);opacity:1}100%{transform:scale(2.5);opacity:0}}
+.inspector{position:absolute;bottom:40px;right:14px;width:175px;background:rgba(8,8,20,0.96);border:1px solid rgba(124,111,255,0.2);border-radius:12px;padding:14px;z-index:20;display:none}
+.inspector.show{display:block;animation:iIn .2s ease}
+@keyframes iIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.ins-port{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;letter-spacing:-.02em}
+.ins-name{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;margin-bottom:10px}
+.ins-badge{display:inline-block;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:2px 7px;border-radius:4px;border:1px solid;margin-bottom:10px}
+.ins-row{display:flex;justify-content:space-between;font-size:10px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.ins-row span:first-child{color:rgba(255,255,255,0.3)}
+.ins-row span:last-child{font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,0.7)}
+.ins-kill{width:100%;margin-top:10px;padding:7px;border-radius:6px;border:1px solid rgba(239,68,68,0.3);background:rgba(239,68,68,0.07);color:#ef4444;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.04em;transition:background .15s}
+.ins-kill:hover{background:rgba(239,68,68,0.18)}
+.legend{position:absolute;bottom:0;left:0;right:0;padding:7px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,15,0.7);border-top:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(4px);z-index:10}
+.leg-txt{font-size:9px;color:rgba(255,255,255,0.18);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+.leg-items{display:flex;gap:12px}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(255,255,255,0.3)}
+.leg-dot{width:6px;height:6px;border-radius:50%}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="bg"></canvas>
+  <svg id="graph"></svg>
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-dot"></div>
+      <div>
+        <div class="hdr-title">PORT MAP</div>
+        <div class="hdr-sub" id="hdr-count">7 nodes · 5 connections</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <span class="scan-txt">LIVE SCAN</span>
+      <div class="pulse-ring"></div>
+    </div>
+  </div>
+  <div class="inspector" id="inspector">
+    <div class="ins-port" id="ins-port">:3000</div>
+    <div class="ins-name" id="ins-name">my-app / node</div>
+    <div class="ins-badge" id="ins-badge">React</div>
+    <div class="ins-row"><span>PID</span><span id="ins-pid">4821</span></div>
+    <div class="ins-row"><span>Protocol</span><span>TCP</span></div>
+    <div class="ins-row"><span>Connections</span><span id="ins-conns">2</span></div>
+    <button class="ins-kill">Kill process</button>
+  </div>
+  <div class="legend">
+    <div class="leg-items">
+      <div class="leg-item"><div class="leg-dot" style="background:#7c6fff;box-shadow:0 0 4px #7c6fff"></div>Dev server</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#4a4a6a"></div>System</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#22c55e;box-shadow:0 0 4px #22c55e"></div>Database</div>
+    </div>
+    <span class="leg-txt">DRAG · SCROLL TO ZOOM · CLICK TO INSPECT</span>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+const NODES=[
+  {id:'n1',port:3000,label:'my-app',fw:'React',color:'#61dafb',dev:true,pid:4821,conns:2},
+  {id:'n2',port:5173,label:'admin',fw:'Vite',color:'#646cff',dev:true,pid:5102,conns:1},
+  {id:'n3',port:4000,label:'api-server',fw:'Node',color:'#68a063',dev:true,pid:3920,conns:3},
+  {id:'n4',port:5432,label:'postgres',fw:'Postgres',color:'#336791',dev:true,pid:1240,conns:2},
+  {id:'n5',port:6379,label:'redis',fw:'Redis',color:'#dc382d',dev:true,pid:980,conns:1},
+  {id:'n6',port:27017,label:'mongo',fw:'Mongo',color:'#4db33d',dev:true,pid:1104,conns:1},
+  {id:'n7',port:8080,label:'proxy',fw:'HTTP',color:'#f0a500',dev:false,pid:2201,conns:2},
+];
+const EDGES=[{s:'n1',t:'n3'},{s:'n2',t:'n3'},{s:'n3',t:'n4'},{s:'n3',t:'n5'},{s:'n7',t:'n3'}];
+const canvas=document.getElementById('bg');const wrap=document.getElementById('wrap');
+let W,H;function resize(){W=wrap.clientWidth;H=wrap.clientHeight;canvas.width=W;canvas.height=H}resize();
+const ctx=canvas.getContext('2d');
+const particles=Array.from({length:60},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5,opacity:Math.random()*.4+.05}));
+function drawBg(){ctx.clearRect(0,0,W,H);ctx.strokeStyle='rgba(124,111,255,0.04)';ctx.lineWidth=.5;for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(124,111,255,${p.opacity})`;ctx.fill()});const vg=ctx.createRadialGradient(W/2,H/2,H*.2,W/2,H/2,H*.8);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,12,0.7)');ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);requestAnimationFrame(drawBg)}drawBg();
+const svg=d3.select('#graph');const W2=wrap.clientWidth,H2=wrap.clientHeight;const defs=svg.append('defs');
+defs.append('marker').attr('id','arr').attr('viewBox','0 0 10 10').attr('refX',28).attr('refY',5).attr('markerWidth',6).attr('markerHeight',6).attr('orient','auto-start-reverse').append('path').attr('d','M2 1L8 5L2 9').attr('fill','none').attr('stroke','rgba(124,111,255,0.6)').attr('stroke-width',1.5).attr('stroke-linecap','round');
+function addGlow(id,std,color){const f=defs.append('filter').attr('id',id).attr('x','-50%').attr('y','-50%').attr('width','200%').attr('height','200%');f.append('feFlood').attr('flood-color',color).attr('result','c');f.append('feComposite').attr('in','c').attr('in2','SourceAlpha').attr('operator','in').attr('result','cc');f.append('feGaussianBlur').attr('in','cc').attr('stdDeviation',std).attr('result','blur');const m=f.append('feMerge');m.append('feMergeNode').attr('in','blur');m.append('feMergeNode').attr('in','SourceGraphic')}
+addGlow('glow-sm',3,'rgba(124,111,255,0.8)');addGlow('glow-md',6,'rgba(124,111,255,0.6)');
+NODES.forEach(n=>{const f=defs.append('filter').attr('id',`gn-${n.id}`).attr('x','-80%').attr('y','-80%').attr('width','260%').attr('height','260%');f.append('feFlood').attr('flood-color',n.color).attr('result','c');f.append('feComposite').attr('in','c').attr('in2','SourceAlpha').attr('operator','in').attr('result','cc');f.append('feGaussianBlur').attr('in','cc').attr('stdDeviation',5).attr('result','blur');const m=f.append('feMerge');m.append('feMergeNode').attr('in','blur');m.append('feMergeNode').attr('in','SourceGraphic')});
+EDGES.forEach((e,i)=>{const src=NODES.find(n=>n.id===e.s);const tgt=NODES.find(n=>n.id===e.t);const g=defs.append('linearGradient').attr('id',`eg${i}`).attr('gradientUnits','userSpaceOnUse');g.append('stop').attr('offset','0%').attr('stop-color',src.color).attr('stop-opacity',.15);g.append('stop').attr('offset','50%').attr('stop-color','rgba(124,111,255,0.9)');g.append('stop').attr('offset','100%').attr('stop-color',tgt.color).attr('stop-opacity',.15)});
+const container=svg.append('g');svg.call(d3.zoom().scaleExtent([.3,3]).on('zoom',e=>container.attr('transform',e.transform)));
+const simNodes=NODES.map(n=>({...n}));const simEdges=EDGES.map(e=>({...e,source:e.s,target:e.t}));
+const sim=d3.forceSimulation(simNodes).force('link',d3.forceLink(simEdges).id(d=>d.id).distance(130).strength(.5)).force('charge',d3.forceManyBody().strength(d=>d.dev?-500:-300)).force('center',d3.forceCenter(W2/2,H2/2-20)).force('collide',d3.forceCollide(d=>d.dev?55:42));
+const edgeG=container.append('g');
+const edgePaths=edgeG.selectAll('.ep').data(simEdges).enter().append('path').attr('fill','none').attr('stroke',(d,i)=>`url(#eg${i})`).attr('stroke-width',1.5).attr('stroke-dasharray','5 5').attr('opacity',.7).attr('marker-end','url(#arr)');
+const flowPaths=edgeG.selectAll('.fp').data(simEdges).enter().append('path').attr('fill','none').attr('stroke','rgba(200,190,255,0.9)').attr('stroke-width',2.5).attr('stroke-dasharray','2 28').attr('opacity',1);
+const scanPaths=edgeG.selectAll('.sp').data(simEdges).enter().append('path').attr('fill','none').attr('stroke','rgba(255,255,255,0.15)').attr('stroke-width',4).attr('stroke-dasharray','1 60').attr('opacity',.6);
+const nodeG=container.append('g');
+const nodes=nodeG.selectAll('.ng').data(simNodes).enter().append('g').attr('class','ng').style('cursor','pointer').call(d3.drag().on('start',(e,d)=>{if(!e.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y}).on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y}).on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null})).on('click',(e,d)=>{e.stopPropagation();selectNode(d)});
+svg.on('click',()=>deselect());
+nodes.append('circle').attr('r',d=>d.dev?52:40).attr('fill','none').attr('stroke',d=>d.color).attr('stroke-width',.5).attr('stroke-dasharray','3 6').attr('opacity',.12);
+nodes.append('circle').attr('r',d=>d.dev?38:28).attr('fill','none').attr('stroke',d=>d.color).attr('stroke-width',1).attr('opacity',.2).attr('filter',d=>`url(#gn-${d.id})`);
+nodes.append('circle').attr('class','core').attr('r',d=>d.dev?26:18).attr('fill',d=>`${d.color}18`).attr('stroke',d=>d.color).attr('stroke-width',1.5).attr('filter',d=>`url(#gn-${d.id})`);
+nodes.append('circle').attr('r',d=>d.dev?8:5).attr('fill',d=>d.color).attr('opacity',.5).attr('filter',d=>`url(#gn-${d.id})`);
+nodes.append('text').attr('text-anchor','middle').attr('dominant-baseline','central').attr('dy',d=>d.label?'-9':'0').attr('font-family','JetBrains Mono,monospace').attr('font-size',d=>d.dev?'12':'10').attr('font-weight','700').attr('fill',d=>d.color).attr('letter-spacing','-.01em').text(d=>`:${d.port}`);
+nodes.filter(d=>d.label).append('text').attr('text-anchor','middle').attr('dominant-baseline','central').attr('dy','7').attr('font-family','Geist,sans-serif').attr('font-size','8').attr('fill','rgba(255,255,255,0.35)').text(d=>d.label.slice(0,10));
+nodes.filter(d=>d.fw).append('text').attr('text-anchor','middle').attr('font-family','Geist,sans-serif').attr('font-size','7').attr('font-weight','700').attr('letter-spacing','.1em').attr('fill',d=>d.color).attr('dy',d=>d.dev?-44:-34).attr('opacity',.7).text(d=>d.fw.toUpperCase());
+nodes.filter(d=>d.conns>0).append('circle').attr('cx',d=>d.dev?18:12).attr('cy',d=>d.dev?-18:-12).attr('r',7).attr('fill','#0a0a1a').attr('stroke','rgba(124,111,255,0.5)').attr('stroke-width',1);
+nodes.filter(d=>d.conns>0).append('text').attr('x',d=>d.dev?18:12).attr('y',d=>d.dev?-18:-12).attr('text-anchor','middle').attr('dominant-baseline','central').attr('font-family','JetBrains Mono,monospace').attr('font-size','7').attr('font-weight','700').attr('fill','rgba(200,190,255,0.9)').text(d=>d.conns);
+function arcPath(s,t){const dx=(t.x||0)-(s.x||0),dy=(t.y||0)-(s.y||0);const dr=Math.sqrt(dx*dx+dy*dy)*1.4;return`M${s.x},${s.y} A${dr},${dr} 0 0,1 ${t.x},${t.y}`}
+sim.on('tick',()=>{edgePaths.attr('d',d=>arcPath(d.source,d.target));flowPaths.attr('d',d=>arcPath(d.source,d.target));scanPaths.attr('d',d=>arcPath(d.source,d.target));nodes.attr('transform',d=>`translate(${d.x||0},${d.y||0})`)});
+let offset=0;function animFlow(){offset-=.8;flowPaths.attr('stroke-dashoffset',offset);scanPaths.attr('stroke-dashoffset',offset*.3);requestAnimationFrame(animFlow)}animFlow();
+nodes.attr('opacity',0).transition().delay((_,i)=>i*80).duration(500).attr('opacity',1);
+function pulse(){nodes.filter(d=>d.dev).select('.core').transition().duration(1200).attr('opacity',.9).transition().duration(1200).attr('opacity',.6).on('end',pulse)}setTimeout(pulse,600);
+let selectedId=null;
+function selectNode(d){selectedId=d.id;const ins=document.getElementById('inspector');document.getElementById('ins-port').textContent=`:${d.port}`;document.getElementById('ins-port').style.color=d.color;document.getElementById('ins-name').textContent=`${d.label||d.fw||'process'} / ${d.fw||'TCP'}`;const badge=document.getElementById('ins-badge');badge.textContent=d.fw||'TCP';badge.style.color=d.color;badge.style.borderColor=d.color+'55';badge.style.background=d.color+'18';document.getElementById('ins-pid').textContent=d.pid;document.getElementById('ins-conns').textContent=d.conns;ins.classList.add('show');nodes.select('.core').attr('stroke-width',nd=>nd.id===d.id?3:1.5).attr('fill',nd=>nd.id===d.id?`${nd.color}35`:`${nd.color}18`);nodes.select('circle:nth-child(2)').attr('opacity',nd=>nd.id===d.id?.6:.2)}
+function deselect(){selectedId=null;document.getElementById('inspector').classList.remove('show');nodes.select('.core').attr('stroke-width',1.5).attr('fill',d=>`${d.color}18`);nodes.select('circle:nth-child(2)').attr('opacity',.2)}
+</script>
+</body>
+</html>

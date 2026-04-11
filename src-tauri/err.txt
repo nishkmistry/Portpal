@@ -1,0 +1,114 @@
+﻿cargo :     Checking 
+portpal v0.1.0 (C:\Users\a
+ouko\Documents\Projects\Po
+rt 
+Watcher\PortPal\src-tauri)
+At line:1 char:46
++ $env:Path += ";$env:USER
+PROFILE\.cargo\bin"; 
+cargo check 2>&1 | Out-F 
+...
++                         
+                     
+~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (   
+     Checking po...tPal   
+ \src-tauri):String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+warning: unused import: `w
+indow_vibrancy::apply_vibr
+ancy`
+ --> src\main.rs:5:5
+  |
+5 | use window_vibrancy::a
+pply_vibrancy;
+  |     ^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^
+  |
+  = note: 
+`#[warn(unused_imports)]` 
+(part of 
+`#[warn(unused)]`) on by 
+default
+
+error[E0061]: this method 
+takes 0 arguments but 1 
+argument was supplied
+   --> src\main.rs:34:18
+    |
+ 34 |                 
+.id("portpal-tray")
+    |                  ^^ 
+-------------- unexpected 
+argument of type 
+`&'static str`
+    |
+note: method defined here
+   --> C:\Users\aouko\.car
+go\registry\src\index.crat
+es.io-1949cf8c6b5b557f\tau
+ri-2.10.3\src\tray\mod.rs:
+347:10
+    |
+347 |   pub fn id(&self) 
+-> &TrayIconId {
+    |          ^^
+help: remove the extra 
+argument
+    |
+ 34 -                 
+.id("portpal-tray")
+ 34 +                 
+.id()
+    |
+
+error[E0599]: no method 
+named `icon` found for 
+reference `&TrayIconId` 
+in the current scope
+  --> src\main.rs:35:18
+   |
+33 |               let 
+_tray = 
+TrayIconBuilder::new()
+   |                      
+     
+----------------------
+   |                      
+     |
+   |  ____________________
+_____method `icon` is 
+available on 
+`&TrayIconBuilder<_>`
+   | |
+34 | |                 
+.id("portpal-tray")
+35 | |                 .ic
+on(tauri::image::Image::fr
+om_bytes(include_bytes!(".
+./icons/green.png")).unwra
+p())
+   | |                 
+-^^^^ method not found in 
+`&TrayIconId`
+   | |_________________|
+   |
+
+Some errors have detailed 
+explanations: E0061, 
+E0599.
+For more information 
+about an error, try 
+`rustc --explain E0061`.
+warning: `portpal` (bin 
+"portpal") generated 1 
+warning
+error: could not compile 
+`portpal` (bin "portpal") 
+due to 2 previous errors; 
+1 warning emitted

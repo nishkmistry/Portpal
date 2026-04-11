@@ -1,0 +1,42 @@
+﻿cargo :     Checking 
+portpal v0.1.0 (C:\Users\a
+ouko\Documents\Projects\Po
+rt 
+Watcher\PortPal\src-tauri)
+At line:1 char:46
++ $env:Path += ";$env:USER
+PROFILE\.cargo\bin"; 
+cargo check 2>&1 | Out-F 
+...
++                         
+                     
+~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (   
+     Checking po...tPal   
+ \src-tauri):String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+error: proc macro panicked
+  --> src\lib.rs:12:14
+   |
+12 |         .run(tauri::g
+enerate_context!())
+   |              
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: message: 
+failed to open icon C:\Use
+rs\aouko\Documents\Project
+s\Port Watcher\PortPal\src
+-tauri\icons/tray-green.pn
+g: The system cannot find 
+the file specified. (os 
+error 2)
+
+error: could not compile 
+`portpal` (lib) due to 1 
+previous error

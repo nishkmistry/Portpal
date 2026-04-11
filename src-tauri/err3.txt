@@ -1,0 +1,196 @@
+﻿cargo :     Checking 
+portpal v0.1.0 (C:\Users\a
+ouko\Documents\Projects\Po
+rt 
+Watcher\PortPal\src-tauri)
+At line:1 char:46
++ $env:Path += ";$env:USER
+PROFILE\.cargo\bin"; 
+cargo check 2>&1 | Out-F 
+...
++                         
+                     
+~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (   
+     Checking po...tPal   
+ \src-tauri):String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+warning: unused import: 
+`once_cell::sync::Lazy`
+ --> src\scanner.rs:4:5
+  |
+4 | use 
+once_cell::sync::Lazy;
+  |     
+^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: 
+`#[warn(unused_imports)]` 
+(part of 
+`#[warn(unused)]`) on by 
+default
+
+warning: unused import: `s
+td::collections::HashMap`
+ --> src\scanner.rs:5:5
+  |
+5 | use 
+std::collections::HashMap;
+  |     
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: 
+`std::sync::Mutex`
+ --> src\scanner.rs:6:5
+  |
+6 | use std::sync::Mutex;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused imports: 
+`Duration` and `Instant`
+ --> src\scanner.rs:7:17
+  |
+7 | use 
+std::time::{Duration, 
+Instant};
+  |                 
+^^^^^^^^  ^^^^^^^
+
+warning: unused import: 
+`tauri::AppHandle`
+ --> src\scanner.rs:8:5
+  |
+8 | use tauri::AppHandle;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused imports: 
+`MenuItem`, `Menu`, and 
+`PredefinedMenuItem`
+ --> src\scanner.rs:9:19
+  |
+9 | use 
+tauri::menu::{Menu, 
+MenuItem, 
+PredefinedMenuItem};
+  |                   
+^^^^  ^^^^^^^^  
+^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method 
+named `emit` found for 
+struct `AppHandle<R>` in 
+the current scope
+   --> src\tray.rs:151:36
+    |
+151 |                 let 
+_ = app_handle.emit("tray-
+state-changed", 
+new_state.clone());
+    |                     
+               ^^^^
+    |
+   ::: C:\Users\aouko\.car
+go\registry\src\index.crat
+es.io-1949cf8c6b5b557f\tau
+ri-2.10.3\src\lib.rs:952:6
+    |
+952 |   fn emit<S: 
+Serialize + Clone>(&self, 
+event: &str, payload: S) 
+-> Result<()> {
+    |      ---- the 
+method is available for 
+`AppHandle` here
+    |
+    = help: items from 
+traits can only be used 
+if the trait is in scope
+help: there is a method 
+`exit` with a similar 
+name, but with different 
+arguments
+   --> C:\Users\aouko\.car
+go\registry\src\index.crat
+es.io-1949cf8c6b5b557f\tau
+ri-2.10.3\src\app.rs:532:3
+    |
+532 |   pub fn 
+exit(&self, exit_code: 
+i32) {
+    |   ^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
+help: trait `Emitter` 
+which provides `emit` is 
+implemented but not in 
+scope; perhaps you want 
+to import it
+    |
+  1 + use tauri::Emitter;
+    |
+
+error[E0599]: no method 
+named `emit` found for 
+struct `AppHandle<R>` in 
+the current scope
+   --> src\tray.rs:155:32
+    |
+155 |             let _ = 
+app_handle.emit("ports-upd
+ated", &ports);
+    |                     
+           ^^^^
+    |
+   ::: C:\Users\aouko\.car
+go\registry\src\index.crat
+es.io-1949cf8c6b5b557f\tau
+ri-2.10.3\src\lib.rs:952:6
+    |
+952 |   fn emit<S: 
+Serialize + Clone>(&self, 
+event: &str, payload: S) 
+-> Result<()> {
+    |      ---- the 
+method is available for 
+`AppHandle` here
+    |
+    = help: items from 
+traits can only be used 
+if the trait is in scope
+help: there is a method 
+`exit` with a similar 
+name, but with different 
+arguments
+   --> C:\Users\aouko\.car
+go\registry\src\index.crat
+es.io-1949cf8c6b5b557f\tau
+ri-2.10.3\src\app.rs:532:3
+    |
+532 |   pub fn 
+exit(&self, exit_code: 
+i32) {
+    |   ^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
+help: trait `Emitter` 
+which provides `emit` is 
+implemented but not in 
+scope; perhaps you want 
+to import it
+    |
+  1 + use tauri::Emitter;
+    |
+
+For more information 
+about this error, try 
+`rustc --explain E0599`.
+warning: `portpal` (bin 
+"portpal") generated 6 
+warnings
+error: could not compile 
+`portpal` (bin "portpal") 
+due to 2 previous errors; 
+6 warnings emitted
