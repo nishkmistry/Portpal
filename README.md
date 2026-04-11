@@ -14,7 +14,7 @@ A blazing-fast, native desktop dashboard built for modern developers. Stop playi
 [![Built with Tauri](https://img.shields.io/badge/Built_with-Tauri_2-FFC131?style=for-the-badge&logo=tauri&logoColor=white)](https://tauri.app)
 [![Stars](https://img.shields.io/github/stars/aouko/portpal?style=social)](https://github.com/aouko/portpal)
 
-![PortPal App Interaction Demo](assets/ezgif.com.gif)
+![PortPal App Interaction Demo](assets/gif.gif)
 
 </div>
 
