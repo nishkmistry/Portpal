@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/hero.png" alt="PortPal — Developer Port Manager" width="700" />
+![PortPal — Developer Port Manager](https://raw.githubusercontent.com/wisher567/Portpal/main/assets/hero.png)
 
 # ⚡ PortPal
 
@@ -14,7 +14,7 @@ A blazing-fast, native desktop dashboard built for modern developers. Stop playi
 [![Built with Tauri](https://img.shields.io/badge/Built_with-Tauri_2-FFC131?style=for-the-badge&logo=tauri&logoColor=white)](https://tauri.app)
 [![Stars](https://img.shields.io/github/stars/wisher567/Portpal?style=social)](https://github.com/wisher567/Portpal)
 
-![PortPal App Interaction Demo](assets/gif.gif)
+![PortPal App Interaction Demo](https://raw.githubusercontent.com/wisher567/Portpal/main/assets/gif.gif)
 
 </div>
 
@@ -58,7 +58,7 @@ Hover over any port and click **✕** to kill it instantly. If PortPal knows the
 The crown jewel of PortPal. A D3.js-powered network topology visualization that shows precisely how your services are communicating.
 
 <div align="center">
-<img src="assets/portmap.png" alt="Port Map — Interactive Network Topology" width="700" />
+![Port Map — Interactive Network Topology](https://raw.githubusercontent.com/wisher567/Portpal/main/assets/portmap.png)
 </div>
 
 - **Drag & Collide** simulation for physical manipulation
