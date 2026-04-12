@@ -190,6 +190,6 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 **If PortPal saved you from one more `EADDRINUSE`, give it a ⭐**
 
-Made with 🦀 Rust + ⚛️ React + 💜 by [aouko](https://github.com/wisher567)
+Made with 🦀 Rust + ⚛️ React + 💜 by [wisher](https://github.com/wisher567)
 
 </div>
