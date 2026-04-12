@@ -8,11 +8,11 @@
 
 A blazing-fast, native desktop dashboard built for modern developers. Stop playing detective with `netstat` and `lsof`. PortPal watches your ports, tracks traffic, and visualizes network topology — so you can just write code.
 
-[![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/aouko/portpal/releases)
-[![macOS](https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/aouko/portpal/releases)
-[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/aouko/portpal/releases)
+[![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/wisher567/Portpal/releases)
+[![macOS](https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/wisher567/Portpal/releases)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/wisher567/Portpal/releases)
 [![Built with Tauri](https://img.shields.io/badge/Built_with-Tauri_2-FFC131?style=for-the-badge&logo=tauri&logoColor=white)](https://tauri.app)
-[![Stars](https://img.shields.io/github/stars/aouko/portpal?style=social)](https://github.com/aouko/portpal)
+[![Stars](https://img.shields.io/github/stars/wisher567/Portpal?style=social)](https://github.com/wisher567/Portpal)
 
 ![PortPal App Interaction Demo](assets/gif.gif)
 
@@ -90,15 +90,15 @@ PortPal isn't just a basic `netstat` wrapper — it understands what you build:
 </tr>
 <tr>
 <td align="center">
-<a href="https://github.com/aouko/portpal/releases/latest"><code>.msi</code> installer</a><br/>
-<a href="https://github.com/aouko/portpal/releases/latest"><code>.exe</code> setup</a>
+<a href="https://github.com/wisher567/Portpal/releases/latest"><code>.msi</code> installer</a><br/>
+<a href="https://github.com/wisher567/Portpal/releases/latest"><code>.exe</code> setup</a>
 </td>
 <td align="center">
-<a href="https://github.com/aouko/portpal/releases/latest"><code>.dmg</code> Apple Silicon</a><br/>
-<a href="https://github.com/aouko/portpal/releases/latest"><code>.dmg</code> Intel</a>
+<a href="https://github.com/wisher567/Portpal/releases/latest"><code>.dmg</code> Apple Silicon</a><br/>
+<a href="https://github.com/wisher567/Portpal/releases/latest"><code>.dmg</code> Intel</a>
 </td>
 <td align="center">
-<a href="https://github.com/aouko/portpal/releases/latest"><code>.deb</code> / <code>.AppImage</code></a>
+<a href="https://github.com/wisher567/Portpal/releases/latest"><code>.deb</code> / <code>.AppImage</code></a>
 </td>
 </tr>
 </table>
@@ -117,7 +117,7 @@ PortPal isn't just a basic `netstat` wrapper — it understands what you build:
 
 ```bash
 # Clone
-git clone https://github.com/aouko/portpal.git
+git clone https://github.com/wisher567/Portpal.git
 cd portpal
 
 # Install & Run
