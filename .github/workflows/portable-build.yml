@@ -1,7 +1,8 @@
 name: Build Portable PortPal
 
-# This tells GitHub to run the build every time you push code to the 'main' branch,
-# and also gives you a button to run it manually.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     branches:
@@ -13,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # We define the two operating systems we want to build for
+        
         include:
           - platform: "windows-latest"
             os: "windows"
