@@ -1,0 +1,61 @@
+name: Build Portable PortPal
+
+# This tells GitHub to run the build every time you push code to the 'main' branch,
+# and also gives you a button to run it manually.
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: 
+
+jobs:
+  build-portable:
+    strategy:
+      fail-fast: false
+      matrix:
+        # We define the two operating systems we want to build for
+        include:
+          - platform: "windows-latest"
+            os: "windows"
+            build_args: "--no-bundle"
+            artifact_name: "PortPal-Windows-Portable.exe"
+            artifact_path: "src-tauri/target/release/portpal.exe"
+            
+          - platform: "ubuntu-22.04"
+            os: "linux"
+            build_args: "--bundles appimage"
+            artifact_name: "PortPal-Linux-Portable.AppImage"
+            artifact_path: "src-tauri/target/release/bundle/appimage/*.AppImage"
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 🦀 Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: 🐧 Install Linux Dependencies
+        if: matrix.os == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
+
+      - name: 📦 Install NPM Dependencies
+        run: npm install
+
+      - name: 🔨 Build Portable App
+        run: npx tauri build ${{ matrix.build_args }}
+
+      - name: 📤 Upload Portable File
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_path }}
+          if-no-files-found: error
